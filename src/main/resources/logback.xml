@@ -1,0 +1,38 @@
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <property name="defaultPattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level [traceId=%X{X-B3-TraceId:-},spanId=%X{X-B3-SpanId:-}] %logger{64} - %msg%n" />
+    <property name="logFile" value="logs/adminapp.log" />
+
+    <appender name="appLogFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFile}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${logFile}.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${defaultPattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${defaultPattern}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+        <!-- Application LOGGERS -->
+    <logger name="com.b2s.service.adminapp" level="INFO"/>
+
+    <!-- 3rd party Loggers -->
+    <logger name="org.springframework" level="WARN"/>
+
+    <!-- Logging level could be changed after deploy because this configuration is scanned at every 30 seconds -->
+    <root level="${root-log-level:-INFO}">
+        <appender-ref ref="appLogFileAppender"/>
+        <appender-ref ref="stdout"/>
+    </root>
+
+</configuration>

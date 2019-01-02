@@ -1,0 +1,9 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: demo
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=testdb
+    username: testUser
+    password: testUser
