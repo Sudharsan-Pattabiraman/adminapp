@@ -39,11 +39,16 @@ public class AdminAppSecurityConfiguration extends WebSecurityConfigurerAdapter 
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/**").hasRole("ADMIN")
+                .antMatchers("/products/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/users/**").hasAnyRole("USER", "ADMIN")
+				.antMatchers("/users/**").hasRole("USER")
                 .and()
                 .httpBasic()
                 .and()
                 .formLogin()
-                .and();
+                .and()
+				.csrf()
+                .disable();
     }
 }
